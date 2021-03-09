@@ -24,9 +24,15 @@ export default class{
     run(){
         let to_be_replaced = new RegExp(`(<${this.name}[^>]+>|<${this.name}>)`);
         document.querySelectorAll(this.name).forEach((child) => {
-            child.innerHTML='';
-            let allSpecs = child.getAttributes();
-            child.parentElement.innerHTML = child.parentElement.innerHTML.replace(to_be_replaced, this.template(allSpecs));
+                let allSpecs = child.getAttributes();
+                this.template(allSpecs).then((result)=>{
+                    try {
+                        child.parentElement.innerHTML = child.parentElement.innerHTML.replace(to_be_replaced,result);
+                    } catch (error) {
+                        document.body.innerHTML = document.body.innerHTML.replace(to_be_replaced,result);
+                    }
+                    child.innerHTML='';
+            });
         });
     }
 }

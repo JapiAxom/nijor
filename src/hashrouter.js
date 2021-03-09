@@ -20,9 +20,11 @@ export default class{
             url = "#";
         }
         allRoutes[url] = ()=>{
-            document.querySelector(this.routesDiv).innerHTML="<app></app>";
-            Page.init('app');
-            Page.run();
+            setTimeout(()=>{
+                document.querySelector(this.routesDiv).innerHTML="<app></app>";
+                Page.init('app');
+                Page.run();
+            },3);
         };
     }
     extend(url,anotherRouter){
