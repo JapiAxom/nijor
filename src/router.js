@@ -7,14 +7,29 @@ export default class{
         this.routesDiv = routesDiv;
     }
     add(url, callback) {
-        this.url = url;
         allRoutes[url] = ()=>{
             callback();
         }
     }
     render(url,Page){
-        this.url = url;
-        allRoutes[url] = ()=>{
+        let url_with_shlash,url_without_shlash;
+        if(url.endsWith('/')){
+            url_with_shlash = url;
+            let url_chars_array = url.split('').reverse();
+            url_chars_array = url_chars_array.pop();
+            url_without_shlash.join('');
+        }else{
+            url_with_shlash = url + '/';
+            url_without_shlash = url;
+        }
+        allRoutes[url_with_shlash] = ()=>{
+            setTimeout(()=>{
+                document.querySelector(this.routesDiv).innerHTML="<app></app>";
+                Page.init('app');
+                Page.run();
+        },3);
+        };
+        allRoutes[url_without_shlash] = ()=>{
             setTimeout(()=>{
                 document.querySelector(this.routesDiv).innerHTML="<app></app>";
                 Page.init('app');
