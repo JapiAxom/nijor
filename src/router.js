@@ -18,7 +18,6 @@ export default class{
                 Page.init('app');
                 Page.run();
         },3);
-        };
         allRoutes[url+'/'] = ()=>{
             setTimeout(()=>{
                 document.querySelector(this.routesDiv).innerHTML="<app></app>";
@@ -26,8 +25,6 @@ export default class{
                 Page.run();
         },3);
         };
-    }
-    extend(url,anotherRouter){
     }
     route(App) {
         try {
