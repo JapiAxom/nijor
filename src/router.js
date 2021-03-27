@@ -18,6 +18,12 @@ export default class{
                 Page.init('app');
                 Page.run();
         },3);
+        allRoutes[url+'/'] = ()=>{
+            setTimeout(()=>{
+                document.querySelector(this.routesDiv).innerHTML="<app></app>";
+                Page.init('app');
+                Page.run();
+        },3);
         };
     }
     extend(url,anotherRouter){
