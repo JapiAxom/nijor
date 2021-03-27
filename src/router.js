@@ -17,7 +17,7 @@ export default class{
             url_with_shlash = url;
             let url_chars_array = url.split('').reverse();
             url_chars_array = url_chars_array.pop();
-            url_without_shlash.join('');
+            url_without_shlash =url_chars_array.join('');
         }else{
             url_with_shlash = url + '/';
             url_without_shlash = url;
