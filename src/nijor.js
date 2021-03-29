@@ -14,7 +14,7 @@ Object.prototype.getAttributes = function () {
     keys.forEach((key, i) => allAttributes[key] = Values[i]);
     return (allAttributes);
 };
-Window.prototype.location.query = function(){
+window.location.query = function(){
     var params = {};
     var parser = document.createElement('a');
     parser.href = window.location.href;
