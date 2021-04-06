@@ -6,12 +6,7 @@ export default class{
     constructor(routesDiv){
         this.routesDiv = routesDiv;
     }
-    add(url, callback) {
-        allRoutes[url] = ()=>{
-            callback();
-        }
-    }
-    render(url,Page){
+    route(url,Page){
         allRoutes[url] = ()=>{
             setTimeout(()=>{
                 document.querySelector(this.routesDiv).innerHTML="<app></app>";
@@ -27,7 +22,7 @@ export default class{
         },3);
         }
     }
-    route(App) {
+    render(App) {
         try {
             App.init('app');
             App.run(); 
