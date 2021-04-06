@@ -26,3 +26,12 @@ window.location.query = function(){
     }
     return params;
 };
+window.location.n_redirect = function(route){
+    try {
+        history.pushState(null,null,route);
+        history.pushState(null,null,route);
+        history.back();
+    } catch (error) {
+        window.location.href=route;
+    }
+};
