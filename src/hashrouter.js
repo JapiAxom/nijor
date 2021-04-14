@@ -6,15 +6,7 @@ export default class{
     constructor(routesDiv){
         this.routesDiv = routesDiv;
     }
-    add(url, callback) {
-        this.url = url;
-        this.action = callback;
-        if (url === "#" || url === "/") {
-            url = "#";
-        }
-        allRoutes[url] = callback;
-    }
-    render(url,Page){
+    route(url,Page){
         this.url = url;
         if (url === "#" || url === "/") {
             url = "#";
@@ -27,9 +19,7 @@ export default class{
             },3);
         };
     }
-    extend(url,anotherRouter){
-    }
-    route(App) {
+    render(App) {
         try {
             App.init('app');
             App.run(); 

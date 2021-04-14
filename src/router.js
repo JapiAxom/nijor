@@ -5,20 +5,36 @@ let allRoutes = {
 export default class{
     constructor(routesDiv){
         this.routesDiv = routesDiv;
+        this.preRenderfn = function(){};
+        this.postRenderfn = function(){};
+    }
+    preRender(fn){
+        this.preRenderfn = function () {
+            try { fn() } catch (error) {}
+        }
+    }
+    postRender(fn){
+        this.postRenderfn = function () {
+            try { fn() } catch (error) {}
+        }
     }
     route(url,Page){
         allRoutes[url] = ()=>{
             setTimeout(()=>{
+                this.preRenderfn();
                 document.querySelector(this.routesDiv).innerHTML="<app></app>";
                 Page.init('app');
                 Page.run();
+                this.postRenderfn();
         },3);
         }
         allRoutes[url+'/'] = ()=>{
             setTimeout(()=>{
+                this.preRenderfn();
                 document.querySelector(this.routesDiv).innerHTML="<app></app>";
                 Page.init('app');
                 Page.run();
+                this.postRenderfn();
         },3);
         }
     }
