@@ -40,6 +40,7 @@ export default class{
     }
     render(App) {
         try {
+            document.nijor.rootComponent = App;
             App.init('app');
             App.run(); 
         } catch (error) {}

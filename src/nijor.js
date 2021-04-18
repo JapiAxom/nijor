@@ -26,12 +26,25 @@ window.location.query = function(){
     }
     return params;
 };
-window.location.n_redirect = function(route){
+window.nijor={};
+document.nijor={};
+window.nijor.redirect = function(route){
     try {
         history.pushState(null,null,route);
         history.pushState(null,null,route);
         history.back();
     } catch (error) {
         window.location.href=route;
+    }
+};
+window.nijor.reload = function(){
+    try {
+        document.nijor.rootComponent.init('app');
+        document.body.innerHTML="<app></app>";
+        document.nijor.rootComponent.run();
+        history.pushState(null,null,window.location.pathname);
+        history.back();
+    } catch (error) {
+        window.location.reload();
     }
 };
