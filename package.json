@@ -1,6 +1,6 @@
 {
   "name": "@nijor/nijor",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Nijor is a frontend web framework which helps to create websites with ease.",
   "main": "index.js",
   "scripts": {
