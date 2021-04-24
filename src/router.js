@@ -38,9 +38,16 @@ export default class{
         },3);
         }
     }
+    redirect(url,newUrl){
+        allRoutes[url] = ()=>{
+            window.nijor.redirect(newUrl);
+        }
+        allRoutes[url+'/'] = ()=>{
+            window.nijor.redirect(newUrl);
+        }
+    }
     render(App) {
         try {
-            document.nijor.rootComponent = App;
             App.init('app');
             App.run(); 
         } catch (error) {}
@@ -52,12 +59,16 @@ export default class{
         }
         window.onpopstate = function() {
             let url = window.location.pathname;
+            if(url===window.nijor.previousRoute) {
+                return;
+            }
             try{
                 allRoutes[url]();
             }
             catch(e){
                 allRoutes["*"]();
             }
+            window.nijor.previousRoute = window.location.pathname;
         };
     }
 }

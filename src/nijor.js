@@ -1,3 +1,10 @@
+/*
+    Object.prototype.getAttributes:
+                This function returns the key-value-pair of an HTML element.
+                Example: 
+                    HTML: <card name="Test" price="Test"></card>
+                    JS: document.getElementsByName('card')[0].getAttributes; will return {name:'Test',price:'Test'}
+*/
 Object.prototype.getAttributes = function () {
     let el = this;
     var nodes = [], values = [];
@@ -27,24 +34,13 @@ window.location.query = function(){
     return params;
 };
 window.nijor={};
-document.nijor={};
 window.nijor.redirect = function(route){
+    window.nijor.previousRoute=window.location.pathname;
     try {
         history.pushState(null,null,route);
         history.pushState(null,null,route);
         history.back();
     } catch (error) {
         window.location.href=route;
-    }
-};
-window.nijor.reload = function(){
-    try {
-        document.nijor.rootComponent.init('app');
-        document.body.innerHTML="<app></app>";
-        document.nijor.rootComponent.run();
-        history.pushState(null,null,window.location.pathname);
-        history.back();
-    } catch (error) {
-        window.location.reload();
     }
 };

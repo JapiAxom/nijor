@@ -19,7 +19,6 @@ export default class{
         }
     }
     route(url,Page){
-        this.url = url;
         if (url === "#" || url === "/") {
             url = "#";
         }
@@ -33,9 +32,18 @@ export default class{
             },3);
         };
     }
+    redirect(url,newUrl){
+        if (url === "#" || url === "/") {
+            url = "#";
+        }
+        allRoutes[url] = ()=>{
+            setTimeout(()=>{
+                window.location.hash = newUrl;
+            },3);
+        };
+    }
     render(App) {
         try {
-            document.nijor.rootComponent = App;
             App.init('app');
             App.run(); 
         } catch (error) {}
@@ -51,6 +59,7 @@ export default class{
         }
         window.onhashchange = () => {
             let hash = window.location.hash;
+            window.nijor.previousRoute = window.location.pathname;
             if (hash === "" || hash === "#") {
                 hash = "#";
             }
