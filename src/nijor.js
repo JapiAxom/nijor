@@ -34,6 +34,7 @@ window.location.query = function(){
     return params;
 };
 window.nijor={};
+window.nijorfunc={};
 window.nijor.redirect = function(route){
     window.nijor.previousRoute=window.location.pathname;
     try {
