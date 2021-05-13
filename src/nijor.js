@@ -35,6 +35,14 @@ window.location.query = function(){
 };
 window.nijor={};
 window.nijorfunc={};
+
+window.nijor.routes = {
+    "/": () => { },
+    "*": () => { }
+};
+
+window.nijor.hashroutes = {};
+
 window.nijor.redirect = function(route){
     window.nijor.previousRoute=window.location.pathname;
     try {
@@ -45,3 +53,42 @@ window.nijor.redirect = function(route){
         window.location.href=route;
     }
 };
+
+window.nijor.hashredirect = function(path,hash){
+    try {
+        history.pushState(null,null,path+hash);
+        window.nijor.renderHashRoute(path,hash);
+    } catch (error) {
+        window.location.href=route;
+    }
+};
+
+window.nijor.renderRoute = function(url){
+    try{
+        window.nijor.routes[url]();
+    }
+    catch(e){
+        window.nijor.routes["*"]();
+    }
+    window.nijor.previousRoute = window.location.pathname;
+}
+
+window.nijor.renderHashRoute = function(path,hash){
+    try {
+        window.nijor.hashroutes[path][hash]();
+    } catch (e) {
+        try {
+            window.nijor.hashroutes[path]['*']();
+        } catch (error) {}
+    }
+}
+
+window.onhashchange = () => {
+    let hash = window.location.hash;
+    let path = window.location.pathname;
+    window.nijor.previousRoute = window.location.pathname;
+    if (hash === "" || hash === "#") {
+        hash = "#";
+    }
+    window.nijor.renderHashRoute(path,hash);
+}
