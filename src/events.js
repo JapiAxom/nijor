@@ -1,10 +1,10 @@
-export class NijorEvent {
+export class nivent {
 
     constructor(eventName){
         this.eventName = eventName;
     }
 
-    emit(){
+    emit(data={}){
         document.querySelectorAll('[on'+eventName+']').forEach(element=>{
             let cevent = element.getAttribute('on'+eventName);
             var ceventArr = cevent.split(')');
