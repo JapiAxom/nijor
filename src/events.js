@@ -5,8 +5,8 @@ export class nivent {
     }
 
     emit(data={}){
-        document.querySelectorAll('[on'+eventName+']').forEach(element=>{
-            let cevent = element.getAttribute('on'+eventName);
+        document.querySelectorAll('[on'+this.eventName+']').forEach(element=>{
+            let cevent = element.getAttribute('on'+this.eventName);
             var ceventArr = cevent.split(')');
             if(ceventArr[0].endsWith('(')){
                 ceventArr[1]=JSON.stringify(data)+')';
