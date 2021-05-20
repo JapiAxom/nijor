@@ -56,6 +56,7 @@ export default class{
         let url = hash;
         let path = window.location.pathname;
         window.nijor.renderHashRoute(path,url);
+        
     }
 
 }

@@ -51,13 +51,5 @@ export default class{
         } catch (error) {}
         let url = window.location.pathname;
         window.nijor.renderRoute(url);
-
-        window.onpopstate = function() {
-            let url = window.location.pathname;
-            if(url===window.nijor.previousRoute) {return;};
-            window.nijor.renderRoute(url);
-        };
-
     }
-
 }

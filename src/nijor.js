@@ -33,6 +33,7 @@ window.location.query = function(){
     }
     return params;
 };
+
 window.nijor={};
 window.nijorfunc={};
 
@@ -54,21 +55,12 @@ window.nijor.redirect = function(route){
     }
 };
 
-window.nijor.hashredirect = function(path,hash){
-    try {
-        history.pushState(null,null,path+hash);
-        window.nijor.renderHashRoute(path,hash);
-    } catch (error) {
-        window.location.href=route;
-    }
-};
-
-window.nijor.renderRoute = function(url){
+window.nijor.renderRoute = async function(url){
     try{
-        window.nijor.routes[url]();
+        await window.nijor.routes[url]();
     }
     catch(e){
-        window.nijor.routes["*"]();
+        await window.nijor.routes["*"]();
     }
     window.nijor.previousRoute = window.location.pathname;
 }
@@ -83,12 +75,24 @@ window.nijor.renderHashRoute = function(path,hash){
     }
 }
 
-window.onhashchange = () => {
+window.onhashchange = async () => {
     let hash = window.location.hash;
     let path = window.location.pathname;
     window.nijor.previousRoute = window.location.pathname;
     if (hash === "" || hash === "#") {
         hash = "#";
     }
-    window.nijor.renderHashRoute(path,hash);
+    await window.nijor.renderHashRoute(path,hash);
 }
+
+window.onpopstate = async function(e) {
+    let path = e.target.location.pathname;
+    let hash = e.target.location.hash;
+    if(path===window.nijor.previousRoute){
+        await window.nijor.renderHashRoute(window.nijor.previousRoute,hash);
+        return;
+    }
+    await window.nijor.renderRoute(path);
+    await window.nijor.renderHashRoute(path,hash);
+    window.nijor.previousRoute = path;
+};

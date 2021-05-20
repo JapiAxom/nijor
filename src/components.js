@@ -1,6 +1,7 @@
 export default class{
-    constructor(template) {
+    constructor(template,callback) {
         this.template = template;
+        this.cb = callback;
     }
     init(name){
         this.name = name;
@@ -12,15 +13,17 @@ export default class{
         let allSpecs = element.getAttributes();
         try {
             element.innerHTML="";
-            try {
-                let result = await this.template(allSpecs);
-                element.parentElement.innerHTML = element.parentElement.innerHTML.replace(to_be_replaced,result);
-                this.run();
-            } catch (error) {
-                let result = await this.template(allSpecs);
-                document.body.innerHTML = document.body.innerHTML.replace(to_be_replaced,result);
-                this.run();
-            }
-        } catch (error) {}
+        } catch (error) {} 
+        try {
+            let result = await this.template(allSpecs);
+            element.parentElement.innerHTML = element.parentElement.innerHTML.replace(to_be_replaced,result);
+            await this.cb();
+            this.run();
+        } catch (error) {
+            let result = await this.template(allSpecs);
+            document.body.innerHTML = document.body.innerHTML.replace(to_be_replaced,result);
+            await this.cb();
+            this.run();
+        }
     }
 }
