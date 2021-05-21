@@ -21,18 +21,28 @@ Object.prototype.getAttributes = function () {
     keys.forEach((key, i) => allAttributes[key] = Values[i]);
     return (allAttributes);
 };
+
+// window.location.query returns the url parameters.
 window.location.query = function(){
-    var params = {};
-    var parser = document.createElement('a');
-    parser.href = window.location.href;
-    var query = parser.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        params[pair[0]] = decodeURIComponent(pair[1]);
-    }
-    return params;
+
+    (function(){
+
+        var params = {};
+        var parser = document.createElement('a');
+        parser.href = window.location.href;
+        var query = parser.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            params[pair[0]] = decodeURIComponent(pair[1]);
+        }
+        return params;
+
+    })();
 };
+
+// window.nijor is an object used by Nijor during runtime.
+// window.nijorfunc is an object that stores all the events like on:click="clicked()" (on:{event}="func()") 
 
 window.nijor={};
 window.nijorfunc={};
@@ -65,17 +75,17 @@ window.nijor.renderRoute = async function(url){
     window.nijor.previousRoute = window.location.pathname;
 }
 
-window.nijor.renderHashRoute = function(path,hash){
+window.nijor.renderHashRoute = async function(path,hash){
     try {
-        window.nijor.hashroutes[path][hash]();
+        await window.nijor.hashroutes[path][hash]();
     } catch (e) {
         try {
-            window.nijor.hashroutes[path]['*']();
+            await window.nijor.hashroutes[path]['*']();
         } catch (error) {}
     }
 }
 
-window.onhashchange = async () => {
+window.addEventListener('hashchange',async function(){
     let hash = window.location.hash;
     let path = window.location.pathname;
     window.nijor.previousRoute = window.location.pathname;
@@ -83,11 +93,14 @@ window.onhashchange = async () => {
         hash = "#";
     }
     await window.nijor.renderHashRoute(path,hash);
-}
+});
 
-window.onpopstate = async function(e) {
+window.addEventListener('popstate',async e =>{
     let path = e.target.location.pathname;
     let hash = e.target.location.hash;
+    if (hash === "" || hash === "#") {
+        hash = "#";
+    }
     if(path===window.nijor.previousRoute){
         await window.nijor.renderHashRoute(window.nijor.previousRoute,hash);
         return;
@@ -95,4 +108,4 @@ window.onpopstate = async function(e) {
     await window.nijor.renderRoute(path);
     await window.nijor.renderHashRoute(path,hash);
     window.nijor.previousRoute = path;
-};
+});
