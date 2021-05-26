@@ -22,24 +22,20 @@ Object.prototype.getAttributes = function () {
     return (allAttributes);
 };
 
+function getQueryString(){
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = window.location.href;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return params;
+}
 // window.location.query returns the url parameters.
-window.location.query = function(){
-
-    (function(){
-
-        var params = {};
-        var parser = document.createElement('a');
-        parser.href = window.location.href;
-        var query = parser.search.substring(1);
-        var vars = query.split('&');
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split('=');
-            params[pair[0]] = decodeURIComponent(pair[1]);
-        }
-        return params;
-
-    })();
-};
+window.location.query = getQueryString();
 
 // window.nijor is an object used by Nijor during runtime.
 // window.nijorfunc is an object that stores all the events like on:click="clicked()" (on:{event}="func()") 
@@ -109,3 +105,33 @@ window.addEventListener('popstate',async e =>{
     await window.nijor.renderHashRoute(path,hash);
     window.nijor.previousRoute = path;
 });
+
+window.nijor.emitEvent = function(eventName,data={}){
+    document.querySelectorAll('[on'+eventName+']').forEach(element=>{
+        if(element.getAttribute('id')===null){
+            element.setAttribute('id','id_'+makeid(4,6));
+        }
+        var regexRoundBraces = /\((.*)\)/;
+        var EventNameCalled = element.getAttribute('on'+eventName);
+        var EventName = EventNameCalled.split('(')[0];
+        var args = EventNameCalled.match(regexRoundBraces)[1];
+        args = args.replace('$data',JSON.stringify(data));
+        args = args.replace('this','_this');
+        var EvaluationString= `
+        var _this = document.getElementById('${element.id}');
+        ${EventName}(${args});
+        `;
+        eval(EvaluationString);
+    });
+}
+
+function makeid(min,max){
+    var length = Math.floor(Math.random() * (max - min + 1) + min);
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
