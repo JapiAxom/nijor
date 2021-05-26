@@ -22,7 +22,8 @@ Object.prototype.getAttributes = function () {
     return (allAttributes);
 };
 
-function getQueryString(){
+// window.location.query returns the url parameters.
+window.location.query = function(){
     var params = {};
     var parser = document.createElement('a');
     parser.href = window.location.href;
@@ -33,9 +34,7 @@ function getQueryString(){
         params[pair[0]] = decodeURIComponent(pair[1]);
     }
     return params;
-}
-// window.location.query returns the url parameters.
-window.location.query = getQueryString();
+};
 
 // window.nijor is an object used by Nijor during runtime.
 // window.nijorfunc is an object that stores all the events like on:click="clicked()" (on:{event}="func()") 
