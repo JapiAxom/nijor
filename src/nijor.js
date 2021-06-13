@@ -1,4 +1,4 @@
-import "./common-runtime-nijor";
+import "./nijor.common-runtime.js";
 
 window.addEventListener('popstate',async e =>{
     let path = e.target.location.pathname;
